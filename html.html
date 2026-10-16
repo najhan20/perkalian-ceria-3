@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Perkalian Ceria - Belajar Matematika SD</title>
+  <meta name="theme-color" content="#4F46E5">
+  <style>
+    :root {
+      --primary: #4F46E5;
+      --primary-light: #EEF2FF;
+      --accent-yellow: #F59E0B;
+      --accent-green: #10B981;
+      --accent-orange: #F97316;
+      --accent-red: #EF4444;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --radius-sm: 12px;
+      --radius-md: 18px;
+      --radius-lg: 24px;
+      --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+      --shadow-md: 0 6px 20px rgba(0,0,0,0.08);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Chalkboard SE', 'Fredoka', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: #E2E8F0;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* Container HP Mobile-First */
+    #app-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 0 30px rgba(0,0,0,0.15);
+      padding-top: var(--safe-top);
+      padding-bottom: calc(75px + var(--safe-bottom));
+    }
+
+    /* Header Nav */
+    header {
+      background: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--primary-light);
+      padding: 6px 12px;
+      border-radius: 50px;
+    }
+
+    .user-avatar {
+      font-size: 24px;
+      background: white;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .user-details h4 {
+      font-size: 13px;
+      color: var(--primary);
+      line-height: 1.2;
+    }
+
+    .user-details span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .stats-pill {
+      display: flex;
+      gap: 8px;
+    }
+
+    .badge-stat {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: #FEF3C7;
+      color: #B45309;
+      font-weight: bold;
+      font-size: 13px;
+      padding: 6px 10px;
+      border-radius: 50px;
+    }
+
+    /* Content Area */
+    main {
+      flex: 1;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .screen {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* BIMO Guide Box */
+    .bimo-card {
+      background: white;
+      border: 2px solid #E0E7FF;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .bimo-avatar {
+      font-size: 40px;
+      flex-shrink: 0;
+      animation: bounce 2s infinite ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .bimo-bubble {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #334155;
+    }
+
+    .bimo-bubble strong {
+      color: var(--primary);
+    }
+
+    /* Cards & Buttons */
+    .card {
+      background: white;
+      border-radius: var(--radius-md);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 16px;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 50px;
+      border: none;
+      border-radius: var(--radius-md);
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: transform 0.1s, filter 0.2s;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-success { background: var(--accent-green); color: white; }
+    .btn-warning { background: var(--accent-yellow); color: white; }
+    .btn-orange { background: var(--accent-orange); color: white; }
+    .btn-outline { background: white; border: 2px solid #CBD5E1; color: var(--text-main); }
+
+    /* Home Grid Menu */
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .menu-item {
+      background: white;
+      padding: 16px 12px;
+      border-radius: var(--radius-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: border-color 0.2s, transform 0.1s;
+    }
+
+    .menu-item:active {
+      transform: scale(0.96);
+    }
+
+    .menu-item .icon {
+      font-size: 34px;
+      margin-bottom: 8px;
+    }
+
+    .menu-item h3 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .menu-item p {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Core Visualizer Simulator */
+    .sim-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary-light);
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+    }
+
+    .counter-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: white;
+      border: 1px solid #CBD5E1;
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .counter-btn:active {
+      background: #E0E7FF;
+    }
+
+    .basket-area {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: center;
+      min-height: 180px;
+      padding: 14px;
+      background: #F1F5F9;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      border: 2px dashed #CBD5E1;
+    }
+
+    .basket {
+      background: #FFFBEB;
+      border: 2px solid #FCD34D;
+      border-radius: var(--radius-sm);
+      padding: 10px;
+      width: 120px;
+      min-height: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      position: relative;
+    }
+
+    .basket-title {
+      font-size: 11px;
+      font-weight: bold;
+      color: #92400E;
+      margin-bottom: 6px;
+    }
+
+    .basket-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .formula-box {
+      background: white;
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: var(--primary);
+      border: 1px solid #E2E8F0;
+      margin-bottom: 8px;
+    }
+
+    /* Bottom Navigation */
+    nav.bottom-nav {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      max-width: 480px;
+      height: calc(65px + var(--safe-bottom));
+      padding-bottom: var(--safe-bottom);
+      background: white;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.06);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 20%;
+    }
+
+    .nav-btn .icon {
+      font-size: 22px;
+      margin-bottom: 2px;
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+    }
+
+    /* Question / Quiz Styles */
+    .quiz-option {
+      background: white;
+      border: 2px solid #E2E8F0;
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.15s;
+    }
+
+    .quiz-option:active {
+      background: var(--primary-light);
+      border-color: var(--primary);
+    }
+
+    .quiz-option.correct {
+      background: #DCFCE7;
+      border-color: var(--accent-green);
+      color: #166534;
+    }
+
+    .quiz-option.wrong {
+      background: #FEE2E2;
+      border-color: var(--accent-red);
+      color: #991B1B;
+    }
+
+    /* Badges & Report */
+    .badge-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      text-align: center;
+    }
+
+    .badge-card {
+      background: white;
+      padding: 12px 6px;
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid #E2E8F0;
+    }
+
+    .badge-card.locked {
+      opacity: 0.45;
+      filter: grayscale(1);
+    }
+
+    .badge-card .badge-icon {
+      font-size: 32px;
+      margin-bottom: 4px;
+    }
+
+    .badge-card h5 {
+      font-size: 11px;
+      line-height: 1.2;
+    }
+
+    /* Utility */
+    .tag {
+      display: inline-block;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+    .tag-blue { background: #DBEAFE; color: #1E40AF; }
+    .tag-green { background: #D1FAE5; color: #065F46; }
+  </style>
+</head>
+<body>
+
+<div id="app-container">
+  <!-- Top Bar -->
+  <header>
+    <div class="user-pill" onclick="switchScreen('screen-profil')">
+      <div class="user-avatar" id="header-avatar">🦁</div>
+      <div class="user-details">
+        <h4 id="header-name">Petualang Cilik</h4>
+        <span id="header-level">Level 1 SD</span>
+      </div>
+    </div>
+    <div class="stats-pill">
+      <div class="badge-stat">⭐ <span id="header-stars">0</span></div>
+      <div class="badge-stat" style="background:#E0E7FF; color:var(--primary);">🪙 <span id="header-coins">0</span></div>
+    </div>
+  </header>
+
+  <!-- Main Screens Router -->
+  <main>
+    <!-- SCREEN 1: BERANDA -->
+    <div id="screen-home" class="screen active">
+      <div class="bimo-card">
+        <div class="bimo-avatar">🤖</div>
+        <div class="bimo-bubble">
+          <strong>Hai Petualang! Aku BIMO.</strong><br>
+          Ingat ya, perkalian itu seru! Benda dikumpulkan, lalu kita hitung bersama!
+        </div>
+      </div>
+
+      <!-- Quick Continue Banner -->
+      <div class="card" style="background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white;">
+        <span class="tag" style="background: rgba(255,255,255,0.25); color:white;">Lanjutkan Belajar</span>
+        <h3 style="font-size: 18px; margin: 4px 0 8px;">Lab Visual Perkalian</h3>
+        <p style="font-size: 12px; opacity: 0.9; margin-bottom: 14px;">Lihat kelompok benda dan ubah menjadi perkalian nyata.</p>
+        <button class="btn btn-warning" style="color:#78350F;" onclick="switchScreen('screen-visualizer')">
+          🚀 Mulai Eksplorasi
+        </button>
+      </div>
+
+      <h3 style="font-size: 15px; margin: 16px 0 8px; font-weight: bold;">Pilih Petualanganmu</h3>
+      <div class="menu-grid">
+        <div class="menu-item" onclick="switchScreen('screen-visualizer')">
+          <div class="icon">🍎</div>
+          <h3>Lab Visual</h3>
+          <p>Benda & Penjumlahan</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-akademi')">
+          <div class="icon">📚</div>
+          <h3>Akademi SD</h3>
+          <p>Level 1 - 6</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-dunia-benda')">
+          <div class="icon">🎒</div>
+          <h3>Dunia Benda</h3>
+          <p>Latihan Benda Nyata</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-games')">
+          <div class="icon">🎮</div>
+          <h3>Arena Main</h3>
+          <p>Mini Game Seru</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-tantangan')">
+          <div class="icon">⚡</div>
+          <h3>Tantangan Kilat</h3>
+          <p>Kuis Cepat & Nilai</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-petualangan')">
+          <div class="icon">🗺️</div>
+          <h3>Peta Misi</h3>
+          <p>Jelajah 6 Dunia</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-rapor')">
+          <div class="icon">📊</div>
+          <h3>Raporku</h3>
+          <p>Capaian Belajar</p>
+        </div>
+        <div class="menu-item" onclick="switchScreen('screen-guru')">
+          <div class="icon">👩‍🏫</div>
+          <h3>Mode Guru</h3>
+          <p>Ringkasan Kelas</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 2: LAB VISUALISASI PENJUMLAHAN BERULANG (CORE FEATURE) -->
+    <div id="screen-visualizer" class="screen">
+      <div style="display: flex; justify-content: space-between; align-items:center; margin-bottom: 12px;">
+        <button class="btn btn-outline" style="width: auto; padding: 6px 14px; min-height: 36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-green">Laboratorium Konseptual</span>
+      </div>
+
+      <div class="bimo-card">
+        <div class="bimo-avatar">🤖</div>
+        <div class="bimo-bubble" id="sim-bimo-msg">
+          Pilih jenis bendanya, atur jumlah keranjang dan isinya ya!
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="card">
+        <!-- Pilihan Benda -->
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 12px; font-weight: bold; color: var(--text-muted); display:block; margin-bottom: 6px;">PILIH BENDA:</label>
+          <div style="display:flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;">
+            <button class="btn btn-outline" style="min-height:36px; width:auto; padding:4px 10px;" onclick="setObject('🍎')">🍎 Apel</button>
+            <button class="btn btn-outline" style="min-height:36px; width:auto; padding:4px 10px;" onclick="setObject('✏️')">✏️ Pensil</button>
+            <button class="btn btn-outline" style="min-height:36px; width:auto; padding:4px 10px;" onclick="setObject('🧁')">🧁 Kue</button>
+            <button class="btn btn-outline" style="min-height:36px; width:auto; padding:4px 10px;" onclick="setObject('🚗')">🚗 Mobil</button>
+            <button class="btn btn-outline" style="min-height:36px; width:auto; padding:4px 10px;" onclick="setObject('⭐')">⭐ Bintang</button>
+          </div>
+        </div>
+
+        <!-- Kelompok Benda Slider / Buttons -->
+        <div class="sim-controls">
+          <div>
+            <div style="font-size: 13px; font-weight: bold;">Jumlah Keranjang (Kelompok)</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Nilai kelompok ($a$)</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="counter-btn" onclick="updateGroups(-1)">-</div>
+            <span id="label-num-groups" style="font-size: 16px; font-weight: bold; width: 20px; text-align: center;">3</span>
+            <div class="counter-btn" onclick="updateGroups(1)">+</div>
+          </div>
+        </div>
+
+        <!-- Isi Per Kelompok -->
+        <div class="sim-controls">
+          <div>
+            <div style="font-size: 13px; font-weight: bold;">Isi Setiap Keranjang</div>
+            <div style="font-size: 11px; color: var(--text-muted);">Jumlah tiap wadah ($b$)</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div class="counter-btn" onclick="updateItemsPerGroup(-1)">-</div>
+            <span id="label-num-items" style="font-size: 16px; font-weight: bold; width: 20px; text-align: center;">4</span>
+            <div class="counter-btn" onclick="updateItemsPerGroup(1)">+</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Area Benda Visual -->
+      <div class="basket-area" id="basket-display-area">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Formulas Display -->
+      <div class="card">
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px;">BENTUK PENJUMLAHAN BERULANG:</div>
+        <div class="formula-box" id="formula-addition" style="background: #EFF6FF; color: #1D4ED8;">
+          4 + 4 + 4 = 12
+        </div>
+
+        <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 4px; margin-top: 10px;">BENTUK PERKALIAN:</div>
+        <div class="formula-box" id="formula-multiplication" style="background: #FEF3C7; color: #B45309; font-size: 18px;">
+          3 × 4 = 12
+        </div>
+
+        <div id="formula-explanation" style="font-size: 13px; line-height: 1.4; color: #475569; margin-top: 10px; background: #F8FAFC; padding: 10px; border-radius: 8px;">
+          Artinya: Ada <strong>3 keranjang</strong>. Setiap keranjang berisi <strong>4 benda</strong>. Angka 4 dijumlahkan sebanyak 3 kali.
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 3: AKADEMI PERKALIAN SD -->
+    <div id="screen-akademi" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button class="btn btn-outline" style="width:auto; padding:6px 14px; min-height:36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-blue">Kurikulum Merdeka</span>
+      </div>
+      <h3 style="font-size: 16px; margin-bottom: 12px;">Jenjang Belajar Matematika</h3>
+
+      <div class="card" onclick="openAkademiLesson(1)" style="cursor:pointer;">
+        <span class="tag tag-green">Fase A (Kelas 1-2 SD)</span>
+        <h4>Level 1: Mengenal Kelompok Sama Banyak</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Membedakan kelompok yang adil dan sama jumlahnya.</p>
+      </div>
+
+      <div class="card" onclick="openAkademiLesson(2)" style="cursor:pointer;">
+        <span class="tag tag-green">Fase A (Kelas 2 SD)</span>
+        <h4>Level 2: Penjumlahan Berulang</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Mengikat penjumlahan angka kembar menjadi satu.</p>
+      </div>
+
+      <div class="card" onclick="openAkademiLesson(3)" style="cursor:pointer;">
+        <span class="tag tag-blue">Fase B (Kelas 3 SD)</span>
+        <h4>Level 3: Simbol Perkalian (×)</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Memahami makna $a \times b$ bukan terbalik.</p>
+      </div>
+
+      <div class="card" onclick="openAkademiLesson(4)" style="cursor:pointer;">
+        <span class="tag tag-blue">Fase B (Kelas 3-4 SD)</span>
+        <h4>Level 4: Tabel Perkalian Ramah Anak (1-10)</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Pola angka perkalian 2, 5, dan 10 tanpa beban hafalan kaku.</p>
+      </div>
+
+      <div class="card" onclick="openAkademiLesson(5)" style="cursor:pointer;">
+        <span class="tag tag-blue">Fase B (Kelas 4 SD)</span>
+        <h4>Level 5: Masalah Kehidupan Sehari-hari</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Belanja di kantin, membagikan bibit tanaman.</p>
+      </div>
+
+      <div class="card" onclick="openAkademiLesson(6)" style="cursor:pointer;">
+        <span class="tag tag-blue">Fase C (Kelas 5-6 SD)</span>
+        <h4>Level 6: Perkalian Bilangan Puluhan</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-top:4px;">Sifat distributif sederhana menggunakan balok puluhan.</p>
+      </div>
+    </div>
+
+    <!-- SCREEN 4: DUNIA BENDA (LATIHAN KONTEKSTUAL) -->
+    <div id="screen-dunia-benda" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button class="btn btn-outline" style="width:auto; padding:6px 14px; min-height:36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-green">Soal Kontekstual Benda</span>
+      </div>
+
+      <div class="card">
+        <div style="font-size:11px; color:var(--text-muted); margin-bottom:4px;" id="db-category">KATEGORI: PERALATAN SEKOLAH</div>
+        <h4 id="db-question" style="font-size: 15px; margin-bottom: 12px; line-height: 1.4;">
+          Ada 4 kotak pensil. Setiap kotak berisi 2 batang pensil. Berapa seluruh pensil?
+        </h4>
+        <div id="db-visual-preview" style="background:#F8FAFC; border-radius:12px; padding:12px; text-align:center; font-size:24px; margin-bottom:12px;">
+          📦(✏️✏️) 📦(✏️✏️) 📦(✏️✏️) 📦(✏️✏️)
+        </div>
+
+        <div id="db-options">
+          <!-- Populated by JS -->
+        </div>
+
+        <div id="db-feedback" style="display:none; margin-top:12px; padding:10px; border-radius:8px; font-size:13px; line-height:1.4;"></div>
+      </div>
+    </div>
+
+    <!-- SCREEN 5: ARENA BERMAIN (GAMES) -->
+    <div id="screen-games" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button class="btn btn-outline" style="width:auto; padding:6px 14px; min-height:36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-blue">Gamifikasi Seru</span>
+      </div>
+
+      <div class="card">
+        <h3>🎮 Game 1: Tangkap Jawaban Kilat</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;">Pilih jawaban yang benar sebelum waktu habis!</p>
+        <div id="game1-area" style="text-align:center; padding:12px; background:#F8FAFC; border-radius:12px;">
+          <div style="font-size:24px; font-weight:bold; color:var(--primary); margin-bottom:10px;" id="game1-problem">4 × 3 = ?</div>
+          <div id="game1-buttons" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+            <!-- Buttons injected -->
+          </div>
+          <div id="game1-score" style="margin-top:10px; font-size:12px; font-weight:bold; color:var(--accent-green);">Skor: 0</div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:12px;" onclick="initGame1()">Mulai Main Game 1</button>
+      </div>
+
+      <div class="card">
+        <h3>🃏 Game 2: Pasang Kartu Kembar</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;">Cocokkan perkalian dengan bentuk penjumlahan berulangnya!</p>
+        <div id="game2-area" style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px;">
+          <!-- Memory mini game injected -->
+        </div>
+        <button class="btn btn-warning" style="margin-top:12px; color:#78350F;" onclick="initGame2()">Mulai Cocokkan Kartu</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: TANTANGAN KILAT -->
+    <div id="screen-tantangan" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button class="btn btn-outline" style="width:auto; padding:6px 14px; min-height:36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-orange">Latihan Soal Ujian</span>
+      </div>
+
+      <div class="card" id="quiz-setup">
+        <h3>Pengaturan Tantangan Kilat</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 14px;">Uji pemahaman penjumlahan berulang & perkalianmu tanpa rasa takut!</p>
+
+        <label style="font-size:12px; font-weight:bold;">JUMLAH SOAL:</label>
+        <div style="display:flex; gap:8px; margin: 6px 0 14px;">
+          <button class="btn btn-outline" style="min-height:38px;" onclick="setQuizCount(5)">5 Soal</button>
+          <button class="btn btn-outline" style="min-height:38px;" onclick="setQuizCount(10)">10 Soal</button>
+        </div>
+
+        <button class="btn btn-primary" onclick="startQuiz()">Mulai Tantangan Sekarang</button>
+      </div>
+
+      <div class="card" id="quiz-play" style="display:none;">
+        <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--text-muted); margin-bottom:8px;">
+          <span id="quiz-progress-text">Soal 1 dari 5</span>
+          <span id="quiz-timer">Waktu Santai</span>
+        </div>
+        <h3 id="quiz-question-title" style="margin-bottom:12px;">4 + 4 + 4 sama artinya dengan...</h3>
+        <div id="quiz-answers-box"></div>
+      </div>
+
+      <div class="card" id="quiz-result" style="display:none; text-align:center;">
+        <div style="font-size:48px; margin-bottom:6px;">🎉</div>
+        <h3>Tantangan Selesai!</h3>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">Bimo sangat bangga dengan usaha belajarmu!</p>
+        <div style="font-size:28px; font-weight:bold; color:var(--primary); margin-bottom:10px;" id="quiz-final-score">100</div>
+        <p id="quiz-remedial-msg" style="font-size:12px; line-height:1.4; color:#475569; margin-bottom:16px; background:#F1F5F9; padding:10px; border-radius:8px;"></p>
+        <button class="btn btn-primary" onclick="startQuiz()">Coba Lagi</button>
+      </div>
+    </div>
+
+    <!-- SCREEN 7: PETUALANGAN MAP -->
+    <div id="screen-petualangan" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button class="btn btn-outline" style="width:auto; padding:6px 14px; min-height:36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-green">Peta Petualangan 6 Dunia</span>
+      </div>
+
+      <div class="card" style="text-align:center; padding:14px;">
+        <div style="font-size:36px; margin-bottom:6px;">🏞️</div>
+        <h4>Dunia 1: Taman Angka Ramah</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Kumpulkan kelompok bunga mawar yang mekar sama banyak.</p>
+        <button class="btn btn-success" style="min-height:38px; font-size:13px;" onclick="alert('Misi 1: Selesaikan perhitungan bunga di Lab Visual!')">Buka Misi Taman</button>
+      </div>
+
+      <div class="card" style="text-align:center; padding:14px;">
+        <div style="font-size:36px; margin-bottom:6px;">🌲</div>
+        <h4>Dunia 2: Hutan Buah Lezat</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Bantu tupai menghitung 5 keranjang kenari.</p>
+        <button class="btn btn-outline" style="min-height:38px; font-size:13px;" onclick="alert('Misi 2: Berlatihlah di menu Dunia Benda!')">Buka Misi Hutan</button>
+      </div>
+
+      <div class="card" style="text-align:center; padding:14px; opacity:0.8;">
+        <div style="font-size:36px; margin-bottom:6px;">🏰</div>
+        <h4>Dunia 3: Istana Matematika Raja</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Selesaikan Tantangan Kilat dengan bintang minimal 20 untuk membuka kunci ini.</p>
+        <span class="tag tag-blue">Misi Terbuka Bertahap</span>
+      </div>
+    </div>
+
+    <!-- SCREEN 8: RAPORKU & PRESTASI -->
+    <div id="screen-rapor" class="screen">
+      <div class="card">
+        <h3>📊 Perkembangan Belajarku</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:12px;">Data belajar disimpan langsung di perangkat ini.</p>
+
+        <div style="background:#F8FAFC; border-radius:12px; padding:12px; margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; margin-bottom:6px;">
+            <span>Konsep Penjumlahan Berulang</span>
+            <span id="rapor-konsep-stat">Sangat Baik (85%)</span>
+          </div>
+          <div style="width:100%; height:8px; background:#E2E8F0; border-radius:10px; overflow:hidden;">
+            <div style="width:85%; height:100%; background:var(--accent-green);"></div>
+          </div>
+        </div>
+
+        <div style="background:#F8FAFC; border-radius:12px; padding:12px; margin-bottom:12px;">
+          <div style="display:flex; justify-content:space-between; font-size:13px; font-weight:bold; margin-bottom:6px;">
+            <span>Simbol Perkalian ($a \times b$)</span>
+            <span id="rapor-simbol-stat">Paham (70%)</span>
+          </div>
+          <div style="width:100%; height:8px; background:#E2E8F0; border-radius:10px; overflow:hidden;">
+            <div style="width:70%; height:100%; background:var(--primary);"></div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="font-size:15px; margin: 16px 0 8px;">Koleksi Lencana Penghargaan</h3>
+      <div class="badge-grid">
+        <div class="badge-card" id="badge-1">
+          <div class="badge-icon">🌟</div>
+          <h5>Pemula Hebat</h5>
+        </div>
+        <div class="badge-card" id="badge-2">
+          <div class="badge-icon">🧺</div>
+          <h5>Sahabat Kelompok</h5>
+        </div>
+        <div class="badge-card" id="badge-3">
+          <div class="badge-icon">🔍</div>
+          <h5>Detektif Angka</h5>
+        </div>
+        <div class="badge-card locked" id="badge-4">
+          <div class="badge-icon">⚡</div>
+          <h5>Kilat Cepat</h5>
+        </div>
+        <div class="badge-card locked" id="badge-5">
+          <div class="badge-icon">👑</div>
+          <h5>Master SD</h5>
+        </div>
+        <div class="badge-card locked" id="badge-6">
+          <div class="badge-icon">🛡️</div>
+          <h5>Pantang Menyerah</h5>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 9: MODE GURU -->
+    <div id="screen-guru" class="screen">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+        <button class="btn btn-outline" style="width:auto; padding:6px 14px; min-height:36px; font-size:12px;" onclick="switchScreen('screen-home')">⬅ Kembali</button>
+        <span class="tag tag-orange">Dashboard Khusus Guru SD</span>
+      </div>
+
+      <div class="card">
+        <h3>👩‍🏫 Panduan Guru & Fasilitator</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;">Prinsip Kurikulum Merdeka Matematika Fase A/B:</p>
+        <ul style="font-size:12px; line-height:1.6; color:#334155; padding-left:18px;">
+          <li>Jangan langsung mendikte hafalan $3 \times 4 = 12$.</li>
+          <li>Gunakan fitur <strong>Lab Visual</strong> di proyektor kelas sebagai benda manipulatif digital.</li>
+          <li>Tekankan bahwa $4 \times 3$ berbeda makna kontekstualnya dengan $3 \times 4$, meskipun hasil akhirnya sama (sifat komutatif).</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h4>Pengaturan Data Lokal</h4>
+        <p style="font-size:12px; color:var(--text-muted); margin:4px 0 12px;">Data kemajuan siswa tersimpan lokal di browser HP/tablet ini (LocalStorage).</p>
+        <button class="btn btn-outline" style="color:var(--accent-red); border-color:#FCA5A5;" onclick="resetStudentData()">
+          🗑️ Reset Semua Progres Siswa
+        </button>
+      </div>
+    </div>
+
+    <!-- SCREEN 10: PROFIL SISWA -->
+    <div id="screen-profil" class="screen">
+      <div class="card" style="text-align:center;">
+        <div style="font-size:56px; margin: 10px 0;" id="profile-avatar-big">🦁</div>
+        <h3 id="profile-name-big">Petualang Cilik</h3>
+        <p style="font-size:12px; color:var(--text-muted); margin-bottom:16px;">Siswa Hebat Berani Mencoba!</p>
+
+        <label style="font-size:12px; font-weight:bold; display:block; text-align:left; margin-bottom:6px;">GANTI NAMA:</label>
+        <input type="text" id="input-student-name" value="Petualang Cilik" style="width:100%; padding:10px; border-radius:8px; border:1px solid #CBD5E1; margin-bottom:12px; font-size:14px;">
+
+        <label style="font-size:12px; font-weight:bold; display:block; text-align:left; margin-bottom:6px;">PILIH AVATAR:</label>
+        <div style="display:flex; justify-content:center; gap:10px; font-size:26px; margin-bottom:16px;">
+          <span style="cursor:pointer;" onclick="setAvatar('🦁')">🦁</span>
+          <span style="cursor:pointer;" onclick="setAvatar('🐼')">🐼</span>
+          <span style="cursor:pointer;" onclick="setAvatar('🦊')">🦊</span>
+          <span style="cursor:pointer;" onclick="setAvatar('🚀')">🚀</span>
+          <span style="cursor:pointer;" onclick="setAvatar('🦄')">🦄</span>
+        </div>
+
+        <button class="btn btn-primary" onclick="saveProfile()">Simpan Profil</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom Navigation Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" id="nav-home" onclick="switchScreen('screen-home')">
+      <div class="icon">🏠</div>
+      <span>Beranda</span>
+    </button>
+    <button class="nav-btn" id="nav-belajar" onclick="switchScreen('screen-visualizer')">
+      <div class="icon">🍎</div>
+      <span>Lab Benda</span>
+    </button>
+    <button class="nav-btn" id="nav-akademi" onclick="switchScreen('screen-akademi')">
+      <div class="icon">📚</div>
+      <span>Akademi</span>
+    </button>
+    <button class="nav-btn" id="nav-games" onclick="switchScreen('screen-games')">
+      <div class="icon">🎮</div>
+      <span>Main</span>
+    </button>
+    <button class="nav-btn" id="nav-rapor" onclick="switchScreen('screen-rapor')">
+      <div class="icon">🏆</div>
+      <span>Raporku</span>
+    </button>
+  </nav>
+</div>
+
+<script>
+  /* ====================================================================
+     STATE MANAGEMENT & LOCAL STORAGE
+     ==================================================================== */
+  const AppState = {
+    user: {
+      name: "Budi Petualang",
+      avatar: "🦁",
+      level: "Kelas 2 SD",
+      stars: 15,
+      coins: 40
+    },
+    simulator: {
+      numGroups: 3,
+      itemsPerGroup: 4,
+      currentEmoji: '🍎'
+    },
+    duniaBendaIndex: 0,
+    quiz: {
+      totalQuestions: 5,
+      currentStep: 0,
+      score: 0
+    }
+  };
+
+  // Load from LocalStorage
+  function loadSavedData() {
+    try {
+      const saved = localStorage.getItem('perkalian_ceria_data');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        AppState.user = Object.assign(AppState.user, parsed.user || {});
+      }
+    } catch (e) {
+      console.log('Mode lokal privat.');
+    }
+    updateHeaderUI();
+  }
+
+  function saveData() {
+    try {
+      localStorage.setItem('perkalian_ceria_data', JSON.stringify({ user: AppState.user }));
+    } catch (e) {}
+    updateHeaderUI();
+  }
+
+  function updateHeaderUI() {
+    document.getElementById('header-name').textContent = AppState.user.name;
+    document.getElementById('header-level').textContent = AppState.user.level;
+    document.getElementById('header-avatar').textContent = AppState.user.avatar;
+    document.getElementById('header-stars').textContent = AppState.user.stars;
+    document.getElementById('header-coins').textContent = AppState.user.coins;
+    
+    // Profile screen
+    const pName = document.getElementById('profile-name-big');
+    if (pName) pName.textContent = AppState.user.name;
+    const pAv = document.getElementById('profile-avatar-big');
+    if (pAv) pAv.textContent = AppState.user.avatar;
+  }
+
+  /* ====================================================================
+     ROUTER & SCREEN SWITCHER
+     ==================================================================== */
+  function switchScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(screenId);
+    if (target) {
+      target.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    // Sync Bottom Nav
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    if (screenId === 'screen-home') document.getElementById('nav-home')?.classList.add('active');
+    else if (screenId === 'screen-visualizer') document.getElementById('nav-belajar')?.classList.add('active');
+    else if (screenId === 'screen-akademi') document.getElementById('nav-akademi')?.classList.add('active');
+    else if (screenId === 'screen-games') document.getElementById('nav-games')?.classList.add('active');
+    else if (screenId === 'screen-rapor') document.getElementById('nav-rapor')?.classList.add('active');
+
+    if (screenId === 'screen-visualizer') renderSimulator();
+    if (screenId === 'screen-dunia-benda') loadDuniaBendaQuestion();
+  }
+
+  /* ====================================================================
+     CORE FEATURE: SIMULATOR VISUALISASI PENJUMLAHAN BERULANG
+     Pedagogi: a kelompok berisi b benda = b + b + ... (a kali) = a x b
+     ==================================================================== */
+  function setObject(emoji) {
+    AppState.simulator.currentEmoji = emoji;
+    renderSimulator();
+  }
+
+  function updateGroups(delta) {
+    const newVal = AppState.simulator.numGroups + delta;
+    if (newVal >= 1 && newVal <= 6) {
+      AppState.simulator.numGroups = newVal;
+      renderSimulator();
+    }
+  }
+
+  function updateItemsPerGroup(delta) {
+    const newVal = AppState.simulator.itemsPerGroup + delta;
+    if (newVal >= 1 && newVal <= 6) {
+      AppState.simulator.itemsPerGroup = newVal;
+      renderSimulator();
+    }
+  }
+
+  function renderSimulator() {
+    const a = AppState.simulator.numGroups;       // jumlah kelompok
+    const b = AppState.simulator.itemsPerGroup;   // isi tiap kelompok
+    const total = a * b;
+    const emoji = AppState.simulator.currentEmoji;
+
+    document.getElementById('label-num-groups').textContent = a;
+    document.getElementById('label-num-items').textContent = b;
+
+    // Render Baskets
+    const area = document.getElementById('basket-display-area');
+    area.innerHTML = '';
+
+    for (let i = 1; i <= a; i++) {
+      const basket = document.createElement('div');
+      basket.className = 'basket';
+      
+      let itemEmojis = '';
+      for (let j = 0; j < b; j++) {
+        itemEmojis += `<span>${emoji}</span>`;
+      }
+
+      basket.innerHTML = `
+        <div class="basket-title">Keranjang ${i}</div>
+        <div class="basket-items">${itemEmojis}</div>
+        <div style="font-size:10px; font-weight:bold; color:#B45309; margin-top:4px;">(${b} benda)</div>
+      `;
+      area.appendChild(basket);
+    }
+
+    // Bangun Penjumlahan Berulang: b + b + ... (a kali)
+    const additionArr = [];
+    for (let i = 0; i < a; i++) {
+      additionArr.push(b);
+    }
+    const additionStr = additionArr.join(' + ') + ' = ' + total;
+    document.getElementById('formula-addition').textContent = additionStr;
+
+    // Bangun Perkalian: a x b = total
+    document.getElementById('formula-multiplication').textContent = `${a} × ${b} = ${total}`;
+
+    // Penjelasan Sederhana untuk Anak
+    document.getElementById('formula-explanation').innerHTML = `
+      Artinya: Ada <strong>${a} keranjang</strong>. Setiap keranjang berisi <strong>${b} buah</strong>.<br>
+      Angka <strong>${b}</strong> dijumlahkan berulang sebanyak <strong>${a} kali</strong>.<br>
+      Seluruh benda berjumlah <strong>${total}</strong>.
+    `;
+  }
+
+  /* ====================================================================
+     DUNIA BENDA (20 Variasi Soal Kontekstual Berputar)
+     ==================================================================== */
+  const databaseDuniaBenda = [
+    { cat: "PERALATAN SEKOLAH", q: "Ada 4 kotak pensil. Setiap kotak berisi 2 pensil. Berapa jumlah seluruh pensil?", a: 4, b: 2, icon: "✏️", opt: [6, 8, 10, 12], ans: 8 },
+    { cat: "BUAH-BUAHAN", q: "Ibu menyiapkan 3 piring buah. Tiap piring berisi 5 buah apel merah. Berapa jumlah seluruh apel?", a: 3, b: 5, icon: "🍎", opt: [12, 15, 18, 20], ans: 15 },
+    { cat: "KUE & MAKANAN", q: "Paman membeli 5 bungkus donat. Masing-masing bungkus berisi 3 donat lezat. Berapa donat seluruhnya?", a: 5, b: 3, icon: "🍩", opt: [10, 12, 15, 18], ans: 15 },
+    { cat: "HEWAN LUCU", q: "Ada 2 akuarium kaca. Tiap akuarium berisi 6 ekor ikan mas koki. Berapa ekor ikan semuanya?", a: 2, b: 6, icon: "🐟", opt: [8, 12, 14, 16], ans: 12 },
+    { cat: "MAINAN ANAK", q: "Kakak menata 6 baris mobil-mobilan. Setiap baris ada 2 mobil. Berapa mobil mainan kakak?", a: 6, b: 2, icon: "🚗", opt: [10, 12, 14, 16], ans: 12 }
+  ];
+
+  function loadDuniaBendaQuestion() {
+    const item = databaseDuniaBenda[AppState.duniaBendaIndex % databaseDuniaBenda.length];
+    document.getElementById('db-category').textContent = `KATEGORI: ${item.cat}`;
+    document.getElementById('db-question').textContent = item.q;
+
+    // Visual representasi kelompok
+    let previewStr = "";
+    for(let i=0; i<item.a; i++) {
+      previewStr += `📦(${item.icon.repeat(item.b)}) `;
+    }
+    document.getElementById('db-visual-preview').textContent = previewStr;
+
+    const optContainer = document.getElementById('db-options');
+    optContainer.innerHTML = '';
+    const fb = document.getElementById('db-feedback');
+    fb.style.display = 'none';
+
+    item.opt.forEach(val => {
+      const btn = document.createElement('div');
+      btn.className = 'quiz-option';
+      btn.textContent = `${val} Benda`;
+      btn.onclick = () => checkDuniaBendaAnswer(val, item.ans, item.a, item.b);
+      optContainer.appendChild(btn);
+    });
+  }
+
+  function checkDuniaBendaAnswer(chosen, correct, a, b) {
+    const fb = document.getElementById('db-feedback');
+    fb.style.display = 'block';
+
+    if (chosen === correct) {
+      fb.style.background = "#DCFCE7";
+      fb.style.color = "#166534";
+      fb.innerHTML = `
+        🎉 <strong>Luar Biasa Benar!</strong><br>
+        Ada ${a} kelompok berisi masing-masing ${b} benda.<br>
+        Penjumlahan: ${Array(a).fill(b).join(' + ')} = ${correct}.<br>
+        Bentuk Perkalian: <strong>${a} × ${b} = ${correct}</strong>.
+      `;
+      AppState.user.stars += 2;
+      AppState.user.coins += 5;
+      saveData();
+      setTimeout(() => {
+        AppState.duniaBendaIndex++;
+        loadDuniaBendaQuestion();
+      }, 2500);
+    } else {
+      fb.style.background = "#FEF3C7";
+      fb.style.color = "#92400E";
+      fb.innerHTML = `
+        💡 <strong>Bimo Memberi Petunjuk:</strong><br>
+        Coba hitung tiap kelompok: tiap kotak ada ${b} benda. Tambahkan sebanyak ${a} kali (${Array(a).fill(b).join(' + ')}). Ayo coba lagi!
+      `;
+    }
+  }
+
+  /* ====================================================================
+     ARENA BERMAIN (GAME 1: JAWABAN KILAT & GAME 2: MEMORY CARD)
+     ==================================================================== */
+  let game1Score = 0;
+  function initGame1() {
+    game1Score = 0;
+    nextGame1Question();
+  }
+
+  function nextGame1Question() {
+    const a = Math.floor(Math.random() * 5) + 2;
+    const b = Math.floor(Math.random() * 4) + 1;
+    const ans = a * b;
+
+    document.getElementById('game1-problem').textContent = `${a} × ${b} = ?`;
+    document.getElementById('game1-score').textContent = `Skor: ${game1Score}`;
+
+    const opts = [ans, ans + 2, Math.max(1, ans - 3), ans + 4].sort(() => Math.random() - 0.5);
+    const btnBox = document.getElementById('game1-buttons');
+    btnBox.innerHTML = '';
+
+    opts.forEach(o => {
+      const bEl = document.createElement('button');
+      bEl.className = 'btn btn-outline';
+      bEl.style.minHeight = '42px';
+      bEl.textContent = o;
+      bEl.onclick = () => {
+        if (o === ans) {
+          game1Score += 10;
+          AppState.user.coins += 2;
+          saveData();
+          nextGame1Question();
+        } else {
+          alert('Bimo: "Hampir tepat! Ayo hitung lagi perlahan ya."');
+        }
+      };
+      btnBox.appendChild(bEl);
+    });
+  }
+
+  function initGame2() {
+    const gArea = document.getElementById('game2-area');
+    gArea.innerHTML = '';
+    const cards = [
+      { id: 1, text: "2 × 3" },
+      { id: 1, text: "3 + 3" },
+      { id: 2, text: "3 × 4" },
+      { id: 2, text: "4 + 4 + 4" }
+    ].sort(() => Math.random() - 0.5);
+
+    let selected = [];
+    cards.forEach((c) => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'quiz-option';
+      cardEl.style.justifyContent = 'center';
+      cardEl.style.fontSize = '14px';
+      cardEl.textContent = c.text;
+
+      cardEl.onclick = () => {
+        if (selected.length < 2 && !cardEl.classList.contains('correct')) {
+          cardEl.style.borderColor = 'var(--primary)';
+          selected.push({ element: cardEl, id: c.id });
+          if (selected.length === 2) {
+            if (selected[0].id === selected[1].id) {
+              selected[0].element.classList.add('correct');
+              selected[1].element.classList.add('correct');
+              AppState.user.stars += 3;
+              saveData();
+              selected = [];
+            } else {
+              setTimeout(() => {
+                selected[0].element.style.borderColor = '#E2E8F0';
+                selected[1].element.style.borderColor = '#E2E8F0';
+                selected = [];
+              }, 700);
+            }
+          }
+        }
+      };
+      gArea.appendChild(cardEl);
+    });
+  }
+
+  /* ====================================================================
+     TANTANGAN KILAT QUIZ
+     ==================================================================== */
+  const quizBank = [
+    { q: "Bentuk penjumlahan 3 + 3 + 3 + 3 jika ditulis perkalian adalah...", opts: ["3 × 4", "4 × 3", "4 + 3", "3 × 3"], ans: "4 × 3", tip: "Hitung kelompoknya dulu (ada 4 angka 3)." },
+    { q: "Ada 5 sarang burung. Tiap sarang berisi 2 telur. Kalimat perkaliannya adalah...", opts: ["5 × 2 = 10", "2 × 5 = 7", "5 + 2 = 7", "2 × 2 = 4"], ans: "5 × 2 = 10", tip: "5 sarang (kelompok) dikali 2 telur." },
+    { q: "2 × 6 artinya adalah...", opts: ["6 + 6", "2 + 2 + 2", "6 × 6", "2 + 6"], ans: "6 + 6", tip: "2 kelompok angka 6, artinya 6 dijumlahkan 2 kali." },
+    { q: "4 piring masing-masing berisi 4 donat. Berapa seluruh donat?", opts: ["8", "12", "16", "20"], ans: "16", tip: "4 + 4 + 4 + 4 = 16." },
+    { q: "Penjumlahan berulang dari 3 × 5 adalah...", opts: ["3 + 3 + 3 + 3 + 3", "5 + 5 + 5", "5 × 3", "3 + 5"], ans: "5 + 5 + 5", tip: "3 kelompok angka 5, jadi angka 5 ada 3 buah." }
+  ];
+
+  function setQuizCount(num) {
+    AppState.quiz.totalQuestions = num;
+    alert(`Mode ${num} Soal dipilih! Siap?`);
+  }
+
+  function startQuiz() {
+    document.getElementById('quiz-setup').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'none';
+    document.getElementById('quiz-play').style.display = 'block';
+    AppState.quiz.currentStep = 0;
+    AppState.quiz.score = 0;
+    showQuizStep();
+  }
+
+  function showQuizStep() {
+    const qData = quizBank[AppState.quiz.currentStep % quizBank.length];
+    document.getElementById('quiz-progress-text').textContent = `Soal ${AppState.quiz.currentStep + 1} dari ${AppState.quiz.totalQuestions}`;
+    document.getElementById('quiz-question-title').textContent = qData.q;
+
+    const box = document.getElementById('quiz-answers-box');
+    box.innerHTML = '';
+
+    qData.opts.forEach(op => {
+      const optBtn = document.createElement('div');
+      optBtn.className = 'quiz-option';
+      optBtn.textContent = op;
+      optBtn.onclick = () => {
+        if (op === qData.ans) {
+          AppState.quiz.score += 100 / AppState.quiz.totalQuestions;
+          AppState.user.stars += 1;
+        }
+        AppState.quiz.currentStep++;
+        if (AppState.quiz.currentStep < AppState.quiz.totalQuestions) {
+          showQuizStep();
+        } else {
+          finishQuiz();
+        }
+      };
+      box.appendChild(optBtn);
+    });
+  }
+
+  function finishQuiz() {
+    document.getElementById('quiz-play').style.display = 'none';
+    document.getElementById('quiz-result').style.display = 'block';
+    const finalScore = Math.round(AppState.quiz.score);
+    document.getElementById('quiz-final-score').textContent = finalScore;
+    
+    const remedial = document.getElementById('quiz-remedial-msg');
+    if (finalScore >= 80) {
+      remedial.textContent = "Bimo bangga sekali! Kamu sudah sangat menguasai bahwa perkalian adalah penjumlahan berulang!";
+      document.getElementById('badge-4')?.classList.remove('locked');
+    } else {
+      remedial.textContent = "Bagus sekali sudah berani mencoba! Yuk buka 'Lab Visual Benda' untuk melihat kembali gambar kelompok apel!";
+    }
+    saveData();
+  }
+
+  /* ====================================================================
+     PENGATURAN PROFIL & RESET GURU
+     ==================================================================== */
+  function setAvatar(emoji) {
+    AppState.user.avatar = emoji;
+    document.getElementById('profile-avatar-big').textContent = emoji;
+  }
+
+  function saveProfile() {
+    const val = document.getElementById('input-student-name').value.trim();
+    if (val) AppState.user.name = val;
+    saveData();
+    alert('Profil berhasil diperbarui!');
+    switchScreen('screen-home');
+  }
+
+  function resetStudentData() {
+    if (confirm("Ibu/Bapak Guru, yakin ingin mereset progres belajar perangkat ini?")) {
+      localStorage.removeItem('perkalian_ceria_data');
+      AppState.user.stars = 0;
+      AppState.user.coins = 0;
+      saveData();
+      alert('Data belajar perangkat telah dibersihkan.');
+      location.reload();
+    }
+  }
+
+  function openAkademiLesson(lvl) {
+    alert(`Membuka Modul Level ${lvl}. Mari kita mulai eksplorasi konsep di Lab Visual!`);
+    switchScreen('screen-visualizer');
+  }
+
+  // Auto initialize on load
+  window.addEventListener('DOMContentLoaded', () => {
+    loadSavedData();
+    renderSimulator();
+  });
+</script>
+</body>
+</html>

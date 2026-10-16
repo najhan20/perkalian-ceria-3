@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5"/>
+      <stop offset="100%" stop-color="#7C3AED"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bgGrad)"/>
+  <!-- Lingkaran Luar -->
+  <circle cx="256" cy="256" r="180" fill="#FFFFFF" opacity="0.15"/>
+  <!-- Simbol Robot Bimo & Perkalian Ceria -->
+  <circle cx="256" cy="220" r="90" fill="#FCD34D"/>
+  <!-- Antena Robot -->
+  <line x1="256" y1="130" x2="256" y2="85" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="256" cy="75" r="18" fill="#EF4444"/>
+  <!-- Mata Bimo -->
+  <circle cx="225" cy="210" r="16" fill="#1E293B"/>
+  <circle cx="287" cy="210" r="16" fill="#1E293B"/>
+  <!-- Senyum -->
+  <path d="M 220 245 Q 256 275 292 245" fill="none" stroke="#1E293B" stroke-width="8" stroke-linecap="round"/>
+  <!-- Lencana Simbol Perkalian Ceria -->
+  <g transform="translate(156, 330)">
+    <rect width="200" height="70" rx="35" fill="#10B981"/>
+    <text x="100" y="48" font-family="Arial, sans-serif" font-weight="900" font-size="34" fill="#FFFFFF" text-anchor="middle">3 × 4 = 12</text>
+  </g>
+</svg>
